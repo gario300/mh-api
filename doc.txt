@@ -1,0 +1,37 @@
+# Manhwa Sites Ranking API - Resumen del Proyecto
+
+Esta API es un sistema automatizado para descubrir, scrapear y rankear sitios de lectura de manhwa.
+
+## Arquitectura y Componentes Principales
+
+### 1. Modelos de Datos
+- **Site**: Almacena la información de los sitios (nombre, URL, estado activo).
+- **SiteMetric**: Registra las métricas de rendimiento y popularidad (visitas diarias, SEO, velocidad, uptime y score calculado).
+- **Ranking**: Almacena el resultado final del ranking con la puntuación y la posición actual.
+
+### 2. Servicios de Lógica
+- **CrawlerService**: Utiliza Axios y Cheerio para buscar nuevos sitios en Google mediante queries específicas.
+- **ScraperManager**: Gestiona scrapers específicos (Asura, Reaper) y uno genérico para obtener datos de los sitios.
+- **PopularityService**: Calcula una puntuación de popularidad basada en pesos configurables para las métricas.
+- **RankingService**: Genera el ranking final, ordenando los sitios por su puntuación y asignándoles una posición.
+
+### 3. Automatización (Jobs & Scheduler)
+El sistema utiliza un planificador (`adonisjs-scheduler`) que ejecuta tareas automáticas:
+- **Descubrimiento (DiscoverSitesJob)**: Busca nuevos sitios diariamente.
+- **Scraping (ScrapeSitesJob)**: Recolecta datos de los sitios cada 6 horas.
+- **Métricas (CalculateMetricsJob)**: Calcula la popularidad basándose en los datos obtenidos.
+- **Ranking (RankingJob)**: Actualiza las posiciones en la tabla de clasificación cada 6 horas.
+
+### 4. Endpoints de la API (v1)
+- **GET `/api/v1/rankings`**: Devuelve la lista de sitios ordenados por su posición en el ranking.
+- **GET `/api/v1/test-scrape`**: Endpoint de prueba para disparar el scraping manualmente.
+- **GET `/api/v1/test-ranking`**: Endpoint de prueba para forzar el recálculo del ranking.
+- **Auth**: Sistema de autenticación con registro, login y logout (API Tokens).
+- **Account**: Acceso al perfil del usuario autenticado.
+
+## Tecnologías Utilizadas
+- **Framework**: AdonisJS v6
+- **Base de Datos**: SQLite (vía Lucid ORM)
+- **Scraping**: Axios & Cheerio
+- **Programación**: TypeScript
+- **Tareas**: adonisjs-scheduler
