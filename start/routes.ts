@@ -10,6 +10,7 @@
 import { middleware } from '#start/kernel'
 import router from '@adonisjs/core/services/router'
 import { controllers } from '#generated/controllers'
+import DiscoverSitesJob from '#jobs/discover_sites_job'
 import ScrapeSitesJob from '#jobs/scrape_sites_job'
 import RankingJob from '#jobs/ranking_job'
 const RankingsController = () => import('#controllers/rankings_controller')
@@ -38,6 +39,11 @@ router
       .use(middleware.auth())
 
     router.get('/rankings', [RankingsController, 'index'])
+
+    router.get('/test-discover', async () => {
+      await DiscoverSitesJob.run()
+      return { status: 'discovery done' }
+    })
 
     router.get('/test-scrape', async () => {
       await ScrapeSitesJob.run()
