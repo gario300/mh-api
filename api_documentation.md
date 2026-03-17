@@ -59,16 +59,8 @@ All endpoints are prefixed with `/api/v1/`.
   - **Description**: Manually triggers the `RankingJob`. Forces the system to recalculate all scores and assign new ranking positions immediately.
   - **Response**: `{ "status": "ranking updated" }`
 
-### User Authentication Endpoints
-
-- **`POST /auth/signup`**: Register a new user account.
-- **`POST /auth/login`**: Authenticate and receive an API access token.
-- **`POST /auth/logout`**: Revoke the current access token (Requires Auth).
-- **`GET /account/profile`**: Get the authenticated user's profile information (Requires Auth).
-
 ## 5. Database Schema
 
 - **`sites`**: Stores `id`, `name`, `url`, `logo`, and `isActive` status.
 - **`site_metrics`**: Stores historical metric snapshots including `daily_visits`, `seo_score`, `speed_score`, `uptime`, and the calculated `score`. Tied to a `site_id`.
 - **`rankings`**: Stores the current leaderboard state including the calculated `score` and `rank_position`. Tied to a `site_id`.
-- **`users`** & **`auth_access_tokens`**: Standard AdonisJS authentication tables.
