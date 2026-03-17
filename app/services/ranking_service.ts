@@ -3,7 +3,9 @@ import Ranking from '#models/ranking'
 
 export default class RankingService {
   static async calculate() {
-    const metrics = await SiteMetric.query()
+    // Obtenemos solo la métrica más reciente para cada sitio
+    const subquery = SiteMetric.query().max('id').groupBy('site_id')
+    const metrics = await SiteMetric.query().whereIn('id', subquery)
 
     for (const metric of metrics) {
       const score =
