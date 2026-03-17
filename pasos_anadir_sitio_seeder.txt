@@ -1,0 +1,42 @@
+GUÍA: CÓMO AÑADIR UN NUEVO SITIO MEDIANTE SEEDERS
+
+Para añadir uno o varios sitios específicos a la base de datos de forma manual, sigue estos pasos:
+
+PASO 1: Editar el archivo del Seeder
+------------------------------------
+Abre el archivo ubicado en:
+/database/seeders/site_seeder.ts
+
+Localiza el array 'sites' y añade un nuevo objeto con el nombre y la URL.
+Ejemplo:
+{
+  name: 'Manga Plus',
+  url: 'https://mangaplus.shueisha.co.jp',
+  isActive: true,
+},
+
+PASO 2: Ejecutar el Seeder en la consola
+----------------------------------------
+Ejecuta el siguiente comando en la raíz del proyecto para insertar el nuevo sitio:
+
+node ace db:seed
+
+*Nota: No te preocupes por los sitios que ya existen; el sistema usa 'updateOrCreate', por lo que solo añadirá el nuevo y actualizará los actuales si hubo cambios.*
+
+PASO 3: Generar Métricas y Ranking (Opcional - Inmediato)
+-------------------------------------------------------
+Al añadir un sitio por seeder, este entrará sin estadísticas (visitas=0, score=0). Para que aparezca en el ranking inmediatamente sin esperar a las 6 horas del scheduler, ejecuta estos dos comandos (o visita las URLs en tu navegador):
+
+1. Scrapear datos:
+curl http://localhost:3333/api/v1/test-scrape
+
+2. Recalcular posiciones:
+curl http://localhost:3333/api/v1/test-ranking
+
+PASO 4: Verificar
+-----------------
+Consulta el ranking actualizado para ver la posición de tu nuevo sitio:
+curl http://localhost:3333/api/v1/rankings
+
+-------------------------------------------------------
+TIP: Si quieres que el sitio tenga un logo, asegúrate de que el campo 'logo' en la base de datos apunte a una URL de imagen válida. Actualmente el seeder los crea como 'null' por defecto.
